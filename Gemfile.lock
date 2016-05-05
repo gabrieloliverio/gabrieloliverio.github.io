@@ -135,7 +135,6 @@ PLATFORMS
 DEPENDENCIES
   execjs
   github-pages
-  jekyll
   jekyll-paginate
   jekyll-watch
   kramdown

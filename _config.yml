@@ -23,7 +23,7 @@ description: My personal blog!
 
 # List of links in the navigation bar
 navbar-links:
-  Sobre: "about"
+  Sobre: "pages/about"
   Categorias: "categories"
   Arquivo: "archive"
   #   - Learn markdown: "http://www.markdowntutorial.com/"
