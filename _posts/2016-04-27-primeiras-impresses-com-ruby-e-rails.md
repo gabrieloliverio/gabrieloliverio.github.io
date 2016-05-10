@@ -14,7 +14,7 @@ desconhecidos por mim. Aprender a linguagem em si está sendo bem tranquilo, mas
 esbarrei em alguns problemas de ambiente, sobretudo quando tentei fazer o passo a
 passo do site do Ruby on Rails.
 
-Primeiro porque o Rails - versão  2.3.1, atual na data em que escrevo esse post -
+Primeiro porque o Rails - versão  4.2, atual na data em que escrevo esse post -
 requer o Ruby versão superior a 2, que não está disponível nos repositórios do
 Ubuntu 14.04. Como estava com MUITA preguiça de compilar o Ruby, busquei por repositórios
 que pudessem fornecer esse pacote, e encontrei o [BrightBox](https://www.brightbox.com/blog/2015/01/05/ruby-2-2-0-packages-for-ubuntu).
