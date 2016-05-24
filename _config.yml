@@ -63,7 +63,7 @@ footer-links-active:
 #disqus: ""
 
 # Fill in your Google Analytics ID to track your website using GA
-#google_analytics: ""
+google_analytics: "UA-78233824-1"
 
 # --- Don't need to touch anything below here (but you can if you want) --- #
 
@@ -74,8 +74,6 @@ highlighter: rouge
 permalink: /:year-:month-:day-:title/
 paginate: 5
 paginate_path: "page:num"
-
-gems: [jekyll-paginate]
 
 # Default YAML values (more information on Jekyll's site)
 defaults:
