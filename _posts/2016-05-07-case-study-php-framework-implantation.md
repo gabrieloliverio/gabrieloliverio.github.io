@@ -14,7 +14,7 @@ by ourselves. As we haven't got a dedicated team to the evolution of this framew
 each member do all the possible to conciliate his demands with improvements on
 this framework.
 
-We reached a point that this technology became obsolete, difficult to maintain and
+We got to a point that this technology became obsolete, difficult to maintain and
 required a lot of code to implement features on the systems. When we studied to
 implement some essential features, that all the modern frameworks available
 nowadays have got out of the box, such as XSS, CSRF and SQL Injection protection,
@@ -31,8 +31,9 @@ the team decided to develop a spartan MVC framework, that could barely
 instantiate a class and execute a method based on some parameters received
 by the request.
 
-In this study, I will approach the framework selection process and some of
-the challenges faced by the team involved in this endeavour, in which I belonged to.
+In this study, I will address the framework selection process, executable
+architecture development and some of the challenges faced by the team involved
+in this endeavour, in which I had the opportunity to belonged to.
 
 # The selection process
 
@@ -43,7 +44,7 @@ advantage.
 
 The criteria adopted for the selection - Laravel or Symfony (or even their micro versions - Lumen and Silex), were:
 
-- Comunity size
+- Community size
 - Amount of available libraries
 - Project activity level
 - Native functionalities
@@ -55,16 +56,19 @@ seemed to be more attractive than Symfony. This one, seems to require more
 design patterns knowledge and has a learning curve higher than Laravel. Symfony
 brings Doctrine as its default ORM, which adopts the Data Mapper pattern. This is
 ideal for bigger and more complex projects - and goes beyond my company's usual
-projects and, probably, would only add complexity in the development. Laravel
+projects and, probably, would only add complexity in the development process. Laravel
 brings Eloquent, which adopts the Active Record pattern - it's simpler, requires
 less code and probably, could take to a higher productivity.
 
-Laravel's valition mechanism seemed to be far easier than Symfony's, allowing
-the combination of validators using pipe. The validation in Symfony
-is accomplished using "Assert objects" and the combination of them can be done
-using an array of these objects... it appeared to be more verbose.
+Laravel's validation mechanism seemed to be far easier than Symfony's, allowing
+the combination of validators using strings and a pipe, like
+`required|max:20|min:10`. The validation in Symfony is accomplished using
+"Assert objects" and the combination of them can be done using an array of
+these objects... it appeared to be much more verbose. Don't get me wrong
+Symfony fan... I believe Symfony is a great framework and I want to have
+the opportunity to work with it in a near future.
 
-As we would adopt Angular with Laravel using REST in the middle, the template
+As we would adopt Angular with Laravel using REST in the midfield, the template
 engine have not impacted in our decision, although I have liked Twig much more than
 Blade, but it's just a matter of preference - Twig was developed based
 on the Django template engine, which I use and love :)
@@ -75,8 +79,7 @@ use cases, in order to enable this architecture.
 
 # Executable architecture development
 
-Stuying Laravel, I checked that it haven't supported Oracle databases out of the
-box, but there was a library that added this functionality - [laravel-oci8](https://github.com/yajra/laravel-oci8) - I just needed to know
+Studying Laravel, I had already noticed that it doesn't provide native support to Oracle databases, but there was a library that added this functionality - [laravel-oci8](https://github.com/yajra/laravel-oci8) - I just needed to know
 if it was stable enough to support a project in production environment. My company
 has a database naming convention that uses prefixes in tables, its columns and sequences.
 It would be crucial that this library supported the overwritten of its own convention,
@@ -85,20 +88,20 @@ through sequences and allowing procedures execution.
 
 Laravel has its own naming convention for tables (snake case - the table being the model
 name in the plural form) and fields, such the table's ID and timestamp fields, but
-allows the overwritten of this behavior. The library laravel-oci8 also has its own
+allows the overwritten of this behavior. The library `laravel-oci8` also has its own
 sequences naming convention and its documentation said that it allowed its naming
 customization.
 
 We picked a set of use cases to develop, in which we would start implementing
 from the simplest to the most complex, in order to gain experience with the
-framework. In the first, we should retrieve tuples based on the combination
+framework. In the first, we should retrieve tuples based on the combination of
 search parameters, as well as insert, update and delete records from table.
 
-The retrieving for easy, Eloquent is fantastic... but the insertion was
+The retrieving for easy, Eloquent is fantastic... but the insertion was, well...
 challenging. Following the Laravel documentation, everything appeared to be right,
 but the ID was not being incremented and binded to the insert! According to the
-laravel-oci8 everything was right too, until I finally open an [issue](https://github.com/yajra/laravel-oci8/issues/155) at the Github's project.
-Immediately the project's maintainer answered that the insert through sequences
+`laravel-oci8` everything was right too, until I finally opened an [issue](https://github.com/yajra/laravel-oci8/issues/155) at the project's Github.
+Immediately the its maintainer answered that the insert through sequences
 that used a customized name, other than the default naming convention, was not
 totally implemented yet and pointed me a 'workaround' to this problem (executing
 the sequence manually, attributing the value to the ID field and then saving
@@ -110,47 +113,47 @@ easily implemented.
 We used a RESTful resource controller to provide the services the would be
 consumed by Angular app, with some caveats. The `index` method that originally
 renders a template with all the objects was used to return the objects filtered
-based on parameters received by the request, in a JSON form, of course. The
+based on the parameters received by the request, in a JSON form, of course. The
 `show` method, instead of rendering a template with a single object retrieved
 by its ID, would return this object as a JSON. The `edit` method was not used.
 
+One of the biggest challenges to face in the implantation would be the integration
+with the Identification Management system. In this system, there's a database user
+for each system user, in which its credentials must be used in every database
+connection. To do so, we must develop our own authentication method.
 
-Um dos maiores desafios a serem enfrentados na implantação seria a integração com
-o sistema de gestão de identidades. Nele, cada usuário do sistema possui um usuário
-no Oracle. Os sistemas devem executar as consultas ao banco com as credenciais do
-usuário do Oracle e, para tal, deveríamos desenvolver nosso próprio mecanismo de
-autenticação.
+This authentication method was developed as a User Provider, as Laravel calls,
+and was surprisingly easier than we expected. As were using a API approach, we
+decided to implement the [JWT](https://jwt.io/) (JavaScript Web Token) - a stateless
+pattern that uses a token in the requests to keep the user authenticated, using
+the (great) library [jwt-auth](https://github.com/tymondesigns/jwt-auth).
+Using JWT we wouldn't need to store our session in a Redis or Memcached database
+in order to allow us to fully implement Single Sign-On, as well as would enable
+us to integrate mobile apps, that are slowly emerging in my company and legacy
+desktop applications.
 
-O Laravel, como todo bom framework atual, permite a extensão de suas funcionalidades
-com certa facilidade. A criação de um User Provider, como o Laravel denomina,
-foi bastante tranquila, mesmo para alguém sem experiência no framework.
-Com o mecanismo elaborado, passamos a implementar a autenticação via JWT
-(JavaScript Web Token) - padrão stateless que utiliza um token na requisição para manter
-o usuário autenticado, usado sobretudo em APIs. Como trabalharíamos com Angular e
-faríamos as integrações entre os sistemas via REST, optamos por esse padrão.
+We proceed implementing the more complex use cases, where we tested transactions,
+models using tables from other databases and database engines, as well as
+executing stored procedures - all of them well succeeded.
 
-Implementamos outros casos de uso mais complexos, fazendo uso de transações,
-models utilizando tabelas em outros esquemas e mecanismos de bancos de dados -
-MySQL - que usamos na empresa em conjunto com o Oracle, todos bem sucedidos.
+# Final considerations
 
-# Considerações finais
+We have finished the executable architecture within the time limit (2 months) and
+developed classes for most of the company specific needs, such as the
+authentication and authorization methods, which will be incorporated into a
+dedicated project. This one will be included as a dependency of all the projects
+being developed using this architecture.
 
-Finalizamos a arquitetura executável no prazo estipulado, tendo elaborado
-classes que suprem as necessidades específicas dos projetos da empresa - tais como
-o mecanismo de autenticação - que serão incorporadas em um projeto separado.
-Esse projeto seria incluído como dependência de todos os projetos utilizando
-essa arquitetura.
+Although we have developed this executable architecture and, consequently,
+reduced most of the risks in this implantation, there's always a risk of facing
+a problem, but, to me, this is a risk that is worth to cope with. My company's
+needs aren't too specific that nobody hasn't done something similar and, perhaps,
+provide the source at Github. If there is not already an available solution, the
+nowadays PHP frameworks, like Laravel and Symfony, are developed to deal with
+extensions, as we could note when we needed to develop our authentication method.
 
-Apesar de termos elaborado essa arquitetura executável e, consequentemente
-minimizado o risco da implantação do framework, sempre há o risco de nos depararmos
-com um problema, mas esse é, ao meu ver, mínimo e que vale a pena enfrentar.
-As necessidades da empresa em que trabalho não são tão específicas que ninguém
-já tenha feito algo parecido e, talvez, disponibilizado o código.
-Além disso, o Laravel foi desenvolvido seguindo bons princípios de engenharia de
-software, de modo que permite a modificação e customização de seus comportamentos,
-como pudemos comprovar na elaboração do nosso mecanismo de autenticação.
-
-Esperamos que, com a implantação do framework, ganhemos em produtividade e
-manutenibilidade, além de nossos sistemas se tornarem mais confiáveis e
-seguros. Editarei esse post quando tivermos desenvolvido uma aplicação usando
-o framework, passando os pareceres a respeito do processo.
+We hope that, with this framework implantation, we could improve our systems'  
+maintainability, reliability and security, as well as increase our productivity
+as a team. I intend to edit this post as soon as we finish our first system
+using this architecture, telling our opinions about the process and any
+challenges that might occur.
