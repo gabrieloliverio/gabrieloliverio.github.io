@@ -1,7 +1,7 @@
 ---
 layout: post
 category : linux
-title: "Instalando PHP 5 no Ubuntu 16.04 LTS"
+title: "Installing PHP 5 in Ubuntu 16.04 LTS"
 description: ""
 tags : [ubuntu, linux, php]
 ---
