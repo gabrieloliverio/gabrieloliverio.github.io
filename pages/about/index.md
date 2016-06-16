@@ -1,9 +1,9 @@
 ---
 layout: page
-title: Sobre
+title: About
 ---
 
-Meu nome é Gabriel Olivério, sou motociclista, guitarrista, praticante de
-artes marciais, mecânico amador, apaixonado por viagens e adrenalina.
+My name's Gabriel Olivério, I'm a motorcyclist, guitar player, martial arts
+practitioner, amateur motorcycle mechanic, trip and adrenaline passionate.
 
-Sou  desenvolvedor Python e PHP também :)
+I'm also a Python and PHP developer and Linux user, by the way :)
