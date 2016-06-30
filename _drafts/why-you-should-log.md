@@ -21,13 +21,19 @@ There are two main purposes for logs in our area - debugging, similar to
 the logs used to help the ship crew, and audit, that are used in investigation
 processes. We will focus on the first type of log.
 
-# What you should log?
+# Benefits of logging
+
+- It allows you know exactly the execution flow of your application and can
+use it even in production environment
+- You can take a proactive approach, acting in cases even  
+
+# What should you log?
 
 Simple, you should log everything you judge as important! No one, unless you
 know, what is important for your application. To help you identify what is
 important, let's take a look at some log entries I took from `dmesg`:
 
-```bash
+```
 [    0.755157] PM: Hibernation image not present or could not be loaded.
 [    0.755848] Freeing unused kernel memory: 1336K (ffffffff81d20000 - ffffffff81e6e000)
 [    0.755849] Write protecting the kernel read-only data: 12288k
@@ -47,17 +53,18 @@ server with an invalid virtual host, and events as starting, stopping and
 restarting the server. All these log entries can be used by system administrators
 to possibly find a problem.
 
+## Severity levels
 There are usually five severity levels for logs in logging frameworks:
 debug, info, notice/warning, error and critical.
 
-Debug: It's that one that helps you to find bugs, in which you log an event, such
+**Debug**: It's that one that helps you to find bugs, in which you log an event, such
 a condition evaluated to true and a variable value, for example.
 
-Info: Allows you knowing your application's execution flow. In
+**Info**: Allows you knowing your application's execution flow. In
 this type, you usually log events, such a user registered, a user that logged
 the system, a payment refused and so on.
 
-Warning/notice: These are used when something unusual happened in your system,
+**Warning/notice**: These are used when something unusual happened in your system,
 but it didn't crashed and its user interface was not affected. Up to this point
 you are able to add logs manually, placing the log framework calls in catch
 blocks or based on specific conditions. However, it's really interesting if you use a
@@ -65,10 +72,10 @@ kind of exception handler to deal with events starting from this log severity,
 so that you can handle certain exceptions, maybe logging them and showing a default
 error message, and deal with unexpected exceptions.
 
-Error: Used when something definitely went wrong, such as runtime errors, BUT it
+**Error**: Used when something definitely went wrong, such as runtime errors, BUT it
 doesn't require immediate action.
 
-Critical: Used when something critical happens, such as a system component
+**Critical**: Used when something critical happens, such as a system component
 unavailable, for example.
 
 Some frameworks go beyond these severity levels. Monolog (PHP), for example,
@@ -83,3 +90,55 @@ When something really serious happens, such as a database unavailable, I add a
 critical log entry and, thus, send an e-mail message for the team, but that's my need.
 If you need sending a SMS message for you no matter the time, go ahead if it's
 you need/want.
+
+## Context data
+
+Context data is the information about you're logging and not using them is almost
+the same as not logging at all! Consider for example the log entry below:
+
+```
+[    9.552651] IPv6: link is not ready
+```
+
+So you have a problem, is investigating your `dmesg` output and see that a link
+isn't ready... This could help you if you knew the network interface!
+
+Other example closer to our lives: you have an event subscription website and
+someone is having a problem when tries to subscribe in a specific event, which
+log entries you think would help the most?
+
+### These
+
+```
+[2016-06-30 12:40:05] [INFO] User registered
+[2016-06-30 12:42:11] [INFO] User activated
+[2016-06-30 12:45:03] [INFO] Event subscribed by user
+[2016-06-30 12:46:32] [ERROR] Fail subscribing to event by user
+```
+
+### Or these?
+
+```
+[2016-06-30 12:40:05] [INFO] User 'gabrieloliverio' registered
+[2016-06-30 12:42:11] [INFO] User 'gabrieloliverio' activated
+[2016-06-30 12:45:03] [INFO] Event 'Foo' subscribed by user 'gabrieloliverio'
+[2016-06-30 12:46:32] [ERROR] Fail subscribing to event 'Bar' by user 'gabrieloliverio'
+```
+
+Now think in a log file with thousands of entries, with several users registering
+and subscribing to events simultaneously... You can take your own conclusions :)
+
+# Log handlers
+
+Logging frameworks usually have something they call 'handlers', which are
+structures that allow you to handle log entries based on its severity level.
+This way, you can use a file handler to store logs with severity Info to Critical
+in your filesystem and an email handler, to send an email message to your team
+with log entries with Critical severity level.
+
+Most of the logging frameworks support a myriad of handlers that allow you
+send your log entries to other tools, such as [Slack](https://slack.com),
+[NewRelic](https://newrelic.com/), [Loggly](https://www.loggly.com/) and
+[Graylog](www.graylog2.org), as well as storing your entries in databases,
+like [Redis](http://redis.io/) and [MongoDB](https://www.mongodb.com/), for
+example.
