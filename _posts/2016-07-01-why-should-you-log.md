@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Why you should log"
+title: "Why should you log?"
 description: ""
 category: programming
 tags: [programming]
@@ -21,17 +21,26 @@ There are two main purposes for logs in our area - debugging, similar to
 the logs used to help the ship crew, and audit, that are used in investigation
 processes. We will focus on the first type of log.
 
-# Benefits of logging
+# But why logging?
 
-- It allows you know exactly the execution flow of your application and can
-use it even in production environment
-- You can take a proactive approach, acting in cases even  
+Logging, in opinion, is one of the most powerful tools we developers have got
+in our tool belts.
+
+It allows you know exactly the execution flow of your application and can be
+used even in production environment. Unit testing allows you only to know that the
+feature you developed does what it needs to do (if you developed your test the
+right way, of course), logging shows how it is doing, thus, it's a indispensable
+tool to discover problems in your code.
+
+By logging errors (and sending you notifications by email or SMS), you can start
+solving critical problems without anyone notify you (despite we know users are
+terribly fast to communicate these issues).
 
 # What should you log?
 
 Simple, you should log everything you judge as important! No one, unless you
-know, what is important for your application. To help you identify what is
-important, let's take a look at some log entries I took from `dmesg`:
+know, what it is important for your application. To help you identify what is
+important, let's take a look at some log entries I took from my `dmesg`:
 
 ```
 [    0.755157] PM: Hibernation image not present or could not be loaded.
@@ -54,11 +63,13 @@ restarting the server. All these log entries can be used by system administrator
 to possibly find a problem.
 
 ## Severity levels
+
 There are usually five severity levels for logs in logging frameworks:
 debug, info, notice/warning, error and critical.
 
 **Debug**: It's that one that helps you to find bugs, in which you log an event, such
-a condition evaluated to true and a variable value, for example.
+a condition evaluated to true and a variable value, for example, and are specially
+useful while developing the application.
 
 **Info**: Allows you knowing your application's execution flow. In
 this type, you usually log events, such a user registered, a user that logged
@@ -75,12 +86,12 @@ error message, and deal with unexpected exceptions.
 **Error**: Used when something definitely went wrong, such as runtime errors, BUT it
 doesn't require immediate action.
 
-**Critical**: Used when something critical happens, such as a system component
+**Critical**: Used when something critical happens (duh), such as a system component
 unavailable, for example.
 
 Some frameworks go beyond these severity levels. Monolog (PHP), for example,
 have two others: Alert - for actions that must be taken immediately, waking
-you up on the middle of the night on your vacations, such as entire system down,
+you up on the middle of the night on your vacation, such as entire system down,
 database unavailable and so on - and Emergency, when the system is unusable.
 
 Sincerely, Emergency and Alert for me are the same. When the entire system is
@@ -88,8 +99,8 @@ down, isn't the system unusable, most of the times? Now it's up to you decide at
 what severity level you have to use, I particularly never used Alert and Emergency.
 When something really serious happens, such as a database unavailable, I add a
 critical log entry and, thus, send an e-mail message for the team, but that's my need.
-If you need sending a SMS message for you no matter the time, go ahead if it's
-you need/want.
+If send a SMS message for you no matter the time, go ahead if it's you need/want,
+I don't care unless the message is sent to me! :)
 
 ## Context data
 
@@ -103,9 +114,9 @@ the same as not logging at all! Consider for example the log entry below:
 So you have a problem, is investigating your `dmesg` output and see that a link
 isn't ready... This could help you if you knew the network interface!
 
-Other example closer to our lives: you have an event subscription website and
-someone is having a problem when tries to subscribe in a specific event, which
-log entries you think would help the most?
+Other example, this one closer to our lives while developers: you have an event
+subscription website and someone is having a problem when tries to subscribe in a
+specific event, which log entries you think would help the most?
 
 ### These
 
@@ -134,7 +145,7 @@ Logging frameworks usually have something they call 'handlers', which are
 structures that allow you to handle log entries based on its severity level.
 This way, you can use a file handler to store logs with severity Info to Critical
 in your filesystem and an email handler, to send an email message to your team
-with log entries with Critical severity level.
+with log entries with Critical severity level, for example.
 
 Most of the logging frameworks support a myriad of handlers that allow you
 send your log entries to other tools, such as [Slack](https://slack.com),
@@ -142,3 +153,13 @@ send your log entries to other tools, such as [Slack](https://slack.com),
 [Graylog](www.graylog2.org), as well as storing your entries in databases,
 like [Redis](http://redis.io/) and [MongoDB](https://www.mongodb.com/), for
 example.
+
+Using [Graylog](www.graylog2.org), [LogStash](https://www.elastic.co/products/logstash) or
+[Loggly](https://www.loggly.com/), for example, you can centralize all log files
+to, then, search and analyze entries to discover important information, such as
+monitoring and analyzing user activity and response times, to, perhaps, take some
+proactive approach ;)
+
+I hope you enjoyed the subject, the article and, after your reading, you can
+use logging in your projects to enjoy its benefits. If you have something to
+say, correct or insult me perhaps, leave a message above, OK?
