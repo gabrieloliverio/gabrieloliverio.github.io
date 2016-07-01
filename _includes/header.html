@@ -36,7 +36,7 @@
 		  {% endif %}
 
 		  {% if include.type == "post" %}
-		  <span class="post-meta">Postado em {{ page.date | date: "%-d de %B de %Y" }}</span>
+		  <span class="post-meta">Posted on {{ post.date | date: "%B %-d, %Y" }}</span>
 		  {% endif %}
         </div>
       </div>
