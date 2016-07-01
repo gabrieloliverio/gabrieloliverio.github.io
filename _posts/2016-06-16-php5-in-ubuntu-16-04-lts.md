@@ -23,7 +23,7 @@ sudo su
 apt-get purge `dpkg -l | grep php| awk '{print $2}' |tr "\n" " "`
 ```
 
-** Add the following repository that provides PHP 5.[56] e and update **
+** Add the following repository that provides PHP 5.[56] and update **
 
 ```bash
 add-apt-repository ppa:ondrej/php
@@ -48,7 +48,7 @@ apt-get install libapache2-mod-php5.6
 The package `php5.6-xml` is needed in order to Pear and Pecl be executed properly.
 `libapache2-mod-php5.6` is obviously needed only if you use Apache :)
 
-** Verify if your PHP version o 5.[56] **
+** Verify if your PHP version is 5.[56] **
 
 ```bash
 php -v
@@ -60,8 +60,8 @@ php -v
 a2enmod php5.6
 ```
 
-If you execute `dpkg -l | grep php` or noticed in the `apt-get install` outputs,
-will see that PHP 7 is installed again. Apparently it is a dependency of
+If you executed `dpkg -l | grep php` or noticed in the `apt-get install` outputs,
+saw that PHP 7 is installed again. Apparently it is a dependency of
 `php-pear`, so, you will not get rid of it so early :)
 
 That's it.
