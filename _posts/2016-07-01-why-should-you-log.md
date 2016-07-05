@@ -50,7 +50,6 @@ important, let's take a look at some log entries I took from my `dmesg`:
 [    9.552651] IPv6: ADDRCONF(NETDEV_UP): eth0: link is not ready
 [    0.205464] pci 0000:00:1c.0: PME# supported from D0 D3hot D3cold
 [    0.205704] pci 0000:00:1c.3: System wakeup disabled by ACPI
-[
 ```
 
 None of the above log entries are error messages, they are useful information
@@ -64,8 +63,9 @@ to possibly find a problem.
 
 ## Severity levels
 
-There are usually five severity levels for logs in logging frameworks:
-debug, info, notice/warning, error and critical.
+There are eight severity levels for logs, as described in
+[RFC 5424](https://tools.ietf.org/html/rfc5424) and, implemented by most of
+logging frameworks:
 
 **Debug**: It's that one that helps you to find bugs, in which you log an event, such
 a condition evaluated to true and a variable value, for example, and are specially
@@ -75,13 +75,22 @@ useful while developing the application.
 this type, you usually log events, such a user registered, a user that logged
 the system, a payment refused and so on.
 
-**Warning/notice**: These are used when something unusual happened in your system,
-but it didn't crashed and its user interface was not affected. Up to this point
-you are able to add logs manually, placing the log framework calls in catch
-blocks or based on specific conditions. However, it's really interesting if you use a
-kind of exception handler to deal with events starting from this log severity,
-so that you can handle certain exceptions, maybe logging them and showing a default
-error message, and deal with unexpected exceptions.
+**Notice**: Similar as the previous one - used when normal but significant events
+occur in a system. In an event subscription website, for example, when an event
+gets closed or when it reaches its full capacity, could add a notice log entry.
+
+**Warning**: These are used when something unusual happened in your system,
+it isn't an error yet but it will become if an action is not taken in a near
+future. Using that event subscription website example, when the database system
+starts to return that its capacity to handle simultaneous connections are
+failing, it could be a good idea to log this as warning and obviously monitor
+your log entries to contact the database administrators when appropriate.
+
+Up to this point you are able to add logs manually, placing the log framework
+calls in catch blocks or based on specific conditions. However, it's really
+interesting if you use a kind of exception handler to deal with events starting
+from this log severity, so that you can handle certain exceptions, maybe logging
+them and showing a default error message, and deal with unexpected exceptions.
 
 **Error**: Used when something definitely went wrong, such as runtime errors, BUT it
 doesn't require immediate action.
@@ -89,18 +98,25 @@ doesn't require immediate action.
 **Critical**: Used when something critical happens (duh), such as a system component
 unavailable, for example.
 
-Some frameworks go beyond these severity levels. Monolog (PHP), for example,
-have two others: Alert - for actions that must be taken immediately, waking
-you up on the middle of the night on your vacation, such as entire system down,
-database unavailable and so on - and Emergency, when the system is unusable.
+**Alert**: Used for actions that must be taken immediately, waking you up on the
+middle of the night on your vacation, such as entire system down, database unavailable
+and so on.
+
+**Emergency**: It's used when the system gets unusable.
 
 Sincerely, Emergency and Alert for me are the same. When the entire system is
 down, isn't the system unusable, most of the times? Now it's up to you decide at
-what severity level you have to use, I particularly never used Alert and Emergency.
-When something really serious happens, such as a database unavailable, I add a
-critical log entry and, thus, send an e-mail message for the team, but that's my need.
-If send a SMS message for you no matter the time, go ahead if it's you need/want,
-I don't care unless the message is sent to me! :)
+what severity level you want/need to stop... I particularly never used Alert and
+Emergency ones. When something really serious happens, such as a database unavailable,
+I add a critical log entry and, thus, send an e-mail message for the team, but
+that's my need. If you want to send a SMS message for you no matter the time,
+go ahead if it's you need/want... I don't care unless the message is sent to me! :)
+
+Notice that not all the logging frameworks follow these convention, some of them
+can add or remove severity levels, but the [RFC 5424](https://tools.ietf.org/html/rfc5424)
+is a good starting point to understand the severity levels. With this in mind,
+do not be afraid if you face a **trace**, **off** or **fatal** in logging
+framework documentations...
 
 ## Context data
 
