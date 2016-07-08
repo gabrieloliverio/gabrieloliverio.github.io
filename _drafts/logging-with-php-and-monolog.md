@@ -119,16 +119,16 @@ use Swift_Message;
 use Swift_Mailer;
 
 $transport = Swift_SmtpTransport::newInstance('smtp.vcela.cz', 25);
-$message = new Swift_Message('A log entry was added');
+$message = new Swift_Message('A CRITICAL log was added');
 $message->setFrom('noreply@vcela.cz');
 $message->setTo('sara@vcela.cz');
 $mailer = Swift_Mailer::newInstance($transport);
 
 $logger = new Logger('default');
 $logger->pushHandler(new StreamHandler(__DIR__.'/app.log', Logger::INFO));
-$logger->pushHandler(new SwiftMailerHandler($mailer, $message, Logger::INFO, false));
+$logger->pushHandler(new SwiftMailerHandler($mailer, $message, Logger::CRITICAL, false));
 
-$logger->addInfo('Hey, a log entry!');
+$logger->addCritical('Hey, a critical log entry!');
 ```
 
 The above example uses the `SwiftMailerHandler`, that explains the increased quantity
@@ -138,7 +138,7 @@ To send emails through SwiftMailer, you need instances of `Swift_SmtpTransport`,
 to the `SwiftMailerHandler` instance itself.
 
 The handling starts from the handler located at the top, thus, `SwiftMailerHandler`
-is the first to handle the log entry, sending and e-mail, then, the log is
+(push last) is the first to handle the log entry, sending and e-mail, then, the log is
 stored in the file system by `StreamHandler`.
 
 Notice the last argument passed to the `SwiftMailer`'s constructor - that's the
@@ -186,5 +186,5 @@ $logger->addInfo('User registered', ['username'=>'gabrieloliverio']);
 This would store log entry such as the following:
 
 ```
-[2016-07-06 11:54:23] default.INFO: User registered {'username':'gabrieloliverio'} {"extra":[]}
+[2016-07-06 11:54:23] default.INFO: User registered {'username':'gabrieloliverio'} {"data":"Hello world!"}
 ```
