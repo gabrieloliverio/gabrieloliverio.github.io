@@ -166,7 +166,7 @@ $username = 'gabrieloliverio';
 $logger->addInfo('User registered', ['username' => $username]);
 ```
 
-Pretty straightforward, don't you think?
+Simple, right?
 
 ## Using processors
 
@@ -214,11 +214,11 @@ Formatters can be used to customize the format of the log entries.
 You can write your own formatter or just use one of the
 [built-in formatters](https://github.com/Seldaek/monolog/blob/master/doc/02-handlers-formatters-processors.md#formatters)
 that Monolog provides. In the following example, we will use the built-in
-formatter `HtmlFormatter` to format the log sent by e-mail:
+formatter `HtmlFormatter` to format the log sent by e-mail and, therefore,
+turn into human-readable the log entry sent in the last example:
 
 ```php
 use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SwiftMailerHandler;
 use Monolog\Formatter\HtmlFormatter;
 
@@ -238,5 +238,34 @@ $logger->addCritical('Hey, a critical log entry!');
 ```
 
 In this example, we've binded a `HtmlFormatter` object to the `SwiftMailerHandler` and
-the `$message`'s content type to "text/html" - straightforward, right? This
-would result in a
+defined the `$message`'s content type to "text/html" - straightforward, right? You
+would get an e-mail with following body:
+
+[PATH TO IMAGE]
+
+In a similar way, you can use `JsonFormatter` to encode the entry into JSON or
+even to format it in a different way, without channel name, with other delimiters
+and date format, for example:
+
+```php
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+use Monolog\Formatter\LineFormatter;
+
+$logger = new Logger('default');
+
+$format = "[%datetime%] [%level_name%] %message% [Context %context% Extra %extra%]\n";
+$streamHandler = new StreamHandler(__DIR__.'/app.log', Logger::DEBUG);
+$streamHandler->setFormatter(new LineFormatter($format, 'd/m/Y H:i:s')); // This date format makes much more sense for me, while brazilian :)
+$logger->pushHandler($streamHandler);
+
+$logger->addInfo('Hey mama! I'm different!');
+```
+
+Which result in something like this:
+
+[14-07-2016 12:37:48] [INFO] Hey mama! I'm different! [Context {} Extra {}]
+
+That's it for now. I hope that this article can help you start logging in your
+PHP applications and enjoy its benefits. Do you want to say something?
+Leave a message below!

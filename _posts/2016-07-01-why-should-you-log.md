@@ -178,4 +178,4 @@ proactive approach ;)
 
 I hope you enjoyed the subject, the article and, after your reading, you can
 use logging in your projects to enjoy its benefits. If you have something to
-say, correct or insult me perhaps, leave a message above, OK?
+say, correct or insult me perhaps, leave a message below, OK?
