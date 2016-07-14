@@ -108,9 +108,9 @@ The order you push the handler to the `logger` instance matters, cause whenever
 you add a log entry, it will traverse the handler stack and be handled by them.
 The handler's constructor have got the parameter `$bubble` which, when set to false,
 stops the traversing of the handler stack. Let's see a more useful and complex
-example to make things clear:
+example to make things clear, using the `StreamHandler` and `SwiftMailerHandler`:
 
-```
+```php
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SwiftMailerHandler;
@@ -131,20 +131,21 @@ $logger->pushHandler(new SwiftMailerHandler($mailer, $message, Logger::CRITICAL,
 $logger->addCritical('Hey, a critical log entry!');
 ```
 
-The above example uses the `SwiftMailerHandler`, that explains the increased quantity
-of `use`'s. Also, you need to install [SwiftMailer](http://swiftmailer.org/download).
+To use the `SwiftMailerHandler` you need to install
+[SwiftMailer](http://swiftmailer.org/download).
 To send emails through SwiftMailer, you need instances of `Swift_SmtpTransport`,
-`Swift_Message` and `Swift_Mailer` as well as to bind the `$mailer` and `$message`
+`Swift_Message` and `Swift_Mailer` as well as to bind `$mailer` and `$message`
 to the `SwiftMailerHandler` instance itself.
 
-The handling starts from the handler located at the top, thus, `SwiftMailerHandler`
-(push last) is the first to handle the log entry, sending and e-mail, then, the log is
-stored in the file system by `StreamHandler`.
+The handling starts from the handler located at the top of the stack (pushed last),
+therefore, `SwiftMailerHandler` is the first to handle the log entry, sending an
+e-mail, then, the log is stored in the file system by `StreamHandler`.
 
-Notice the last argument passed to the `SwiftMailer`'s constructor - that's the
-`$bubble` parameter. This parameter defaults to `true` and, when set to `false`,
+Notice that we passed `false` for the last parameter of `SwiftMailer`'s constructor -
+that's the `$bubble` parameter. This defaults to `true` and, when set to `false`,
 stops the traversing of the handler stack, making the `StreamHandler`, located
-at the bottom, never storing logs in the file system.
+at the bottom of the stack (pushed first), never storing logs in the file system
+**IF** `SwiftMailerHandler` handle the entry.
 
 # Context data
 
@@ -160,25 +161,28 @@ array together the log message and using processors.
 This way you pass an array to the `add` method (`addDebug` or `addInfo`, for example)
 after the log message:
 
-```
+```php
 $username = 'gabrieloliverio';
 $logger->addInfo('User registered', ['username' => $username]);
 ```
 
+Pretty straightforward, don't you think?
+
 ## Using processors
 
-Processors include information automatically to the logs. It's a very useful way
-to add information, like session and request data, such IP and browser, for example.
-Monolog provides a
-[bunch of processors](https://github.com/Seldaek/monolog/blob/master/doc/02-handlers-formatters-processors.md#processors), but they can be any callable that receives a parameter corresponding
-the entry and must return this entry, eventually changed:
+Processors automatically include information to log entries and it's a very useful way
+to add information, like session and request data - such the client's IP and browser -
+to log entries of a given type. Monolog provides a
+[bunch of processors](https://github.com/Seldaek/monolog/blob/master/doc/02-handlers-formatters-processors.md#processors),
+but you can also create your owns, as they can be any callable that receives a parameter
+corresponding the entry and return this entry, eventually changed, for example:
 
-```
+```php
 $logger = new Logger('default');
 $logger->pushHandler(new StreamHandler(__DIR__.'/app.log', Logger::INFO));
-$logger->pushProcessor(function ($record) {
-    $record['extra']['data'] = 'Hello world!';
-    return $record;
+$logger->pushProcessor(function ($entry) {
+    $entry['extra']['data'] = 'Hello world!';
+    return $entry;
 });
 $logger->addInfo('User registered', ['username'=>'gabrieloliverio']);
 ```
@@ -188,3 +192,51 @@ This would store log entry such as the following:
 ```
 [2016-07-06 11:54:23] default.INFO: User registered {'username':'gabrieloliverio'} {"data":"Hello world!"}
 ```
+
+To use a Monolog built-in processor it's very similar, you simply use the
+class and push a instance of it using the `pushProcessor` method:
+
+```php
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+use Monolog\Processor\WebProcessor;
+
+$logger = new Logger('default');
+$logger->pushHandler(new StreamHandler(__DIR__.'/app.log', Logger::INFO));
+$logger->pushProcessor(new WebProcessor());
+
+$logger->addInfo('User registered', ['username'=>'gabrieloliverio']);
+```
+
+# Formatters
+
+Formatters can be used to customize the format of the log entries.
+You can write your own formatter or just use one of the
+[built-in formatters](https://github.com/Seldaek/monolog/blob/master/doc/02-handlers-formatters-processors.md#formatters)
+that Monolog provides. In the following example, we will use the built-in
+formatter `HtmlFormatter` to format the log sent by e-mail:
+
+```php
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+use Monolog\Handler\SwiftMailerHandler;
+use Monolog\Formatter\HtmlFormatter;
+
+$message = new Swift_Message('A CRITICAL log was added');
+$message->setFrom('noreply@vcela.cz');
+$message->setTo('sara@vcela.cz');
+$message->setContentType("text/html");
+$mailer = Swift_Mailer::newInstance($transport);
+
+$logger = new Logger('default');
+
+$mailerHandler = new SwiftMailerHandler($mailer, $message, Logger::CRITICAL);
+$mailerHandler->setFormatter(new HtmlFormatter());
+$logger->pushHandler($mailerHandler);
+
+$logger->addCritical('Hey, a critical log entry!');
+```
+
+In this example, we've binded a `HtmlFormatter` object to the `SwiftMailerHandler` and
+the `$message`'s content type to "text/html" - straightforward, right? This
+would result in a
