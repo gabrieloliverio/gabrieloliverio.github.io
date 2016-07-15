@@ -59,12 +59,12 @@ creating one channel for each component or aspect of your application, for examp
 channels 'database', 'router', 'security', 'business' and so on.
 
 Loggers, by itself don't know how to handle logs, but the handlers do! You can push
-how many handlers you need to a `logger` instance and, each type of handler you
+how many handlers you need to a `Logger` instance and, each type of handler you
 push, decide how it's going to handle the log, for example, the `StreamHandler`
-in the above example, record log entries in the file system, in this case, `app.log`.
+in the above example, records log entries in the file system, in this case, `app.log`.
 Monolog provides
 [lots of handlers](https://github.com/Seldaek/monolog/blob/master/doc/02-handlers-formatters-processors.md),
-that record entries in databases, send to email addresses and specific platforms,
+that record entries in databases, send to e-mail addresses and specific platforms,
 such as [Graylog](https://www.graylog.org/), [Slack](https://slack.com),
 [Loggly](https://www.loggly.com) and [NewRelic](https://newrelic.com).
 
@@ -96,7 +96,7 @@ An `info` log entry of a channel called 'default', for example, looks like this:
 
 ```
 
-Monolog provides one `add` for each type of severity, thus, you should call
+Monolog provides one `add` for each type of severity, thus, you can call
 `addDebug`, `addInfo`, `addWarning` and so forth.
 
 For detailed information about how you should use the severity levels, see
@@ -104,7 +104,7 @@ For detailed information about how you should use the severity levels, see
 
 # Handler order
 
-The order you push the handler to the `logger` instance matters, cause whenever
+The order you push the handler to the `Logger` instance matters, cause whenever
 you add a log entry, it will traverse the handler stack and be handled by them.
 The handler's constructor have got the parameter `$bubble` which, when set to false,
 stops the traversing of the handler stack. Let's see a more useful and complex
@@ -133,7 +133,7 @@ $logger->addCritical('Hey, a critical log entry!');
 
 To use the `SwiftMailerHandler` you need to install
 [SwiftMailer](http://swiftmailer.org/download).
-To send emails through SwiftMailer, you need instances of `Swift_SmtpTransport`,
+To send e-mails through SwiftMailer, you need instances of `Swift_SmtpTransport`,
 `Swift_Message` and `Swift_Mailer` as well as to bind `$mailer` and `$message`
 to the `SwiftMailerHandler` instance itself.
 
@@ -238,10 +238,12 @@ $logger->addCritical('Hey, a critical log entry!');
 ```
 
 In this example, we've binded a `HtmlFormatter` object to the `SwiftMailerHandler` and
-defined the `$message`'s content type to "text/html" - straightforward, right? You
-would get an e-mail with following body:
+defined the `$message`'s content type to `"text/html"`. You would get an e-mail
+with following body:
 
-[PATH TO IMAGE]
+![alt text](http://gabrieloliverio.github.io/img/posts/monolog-html-formatter.jpg "Log record formatted as HTML")
+
+Things got WAY better, don't you think?
 
 In a similar way, you can use `JsonFormatter` to encode the entry into JSON or
 even to format it in a different way, without channel name, with other delimiters
@@ -259,12 +261,12 @@ $streamHandler = new StreamHandler(__DIR__.'/app.log', Logger::DEBUG);
 $streamHandler->setFormatter(new LineFormatter($format, 'd/m/Y H:i:s')); // This date format makes much more sense for me, while brazilian :)
 $logger->pushHandler($streamHandler);
 
-$logger->addInfo('Hey mama! I'm different!');
+$logger->addInfo('Hey mama, I'm so different!');
 ```
 
 Which result in something like this:
 
-[14-07-2016 12:37:48] [INFO] Hey mama! I'm different! [Context {} Extra {}]
+[14-07-2016 12:37:48] [INFO] Hey mama, I'm so different! [Context {} Extra {}]
 
 That's it for now. I hope that this article can help you start logging in your
 PHP applications and enjoy its benefits. Do you want to say something?
