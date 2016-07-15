@@ -243,7 +243,7 @@ with following body:
 
 ![alt text](http://gabrieloliverio.github.io/img/posts/monolog-html-formatter.jpg "Log record formatted as HTML")
 
-Things got WAY better, don't you think?
+Really nice, don't you think?
 
 In a similar way, you can use `JsonFormatter` to encode the entry into JSON or
 even to format it in a different way, without channel name, with other delimiters
@@ -266,7 +266,10 @@ $logger->addInfo('Hey mama, I'm so different!');
 
 Which result in something like this:
 
+```
 [14-07-2016 12:37:48] [INFO] Hey mama, I'm so different! [Context {} Extra {}]
+
+```
 
 That's it for now. I hope that this article can help you start logging in your
 PHP applications and enjoy its benefits. Do you want to say something?
