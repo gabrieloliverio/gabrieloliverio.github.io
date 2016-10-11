@@ -10,6 +10,20 @@ tags: [development, agile]
 Esta é uma tradução do artigo
 ["Introducing BDD" de Dan North](https://dannorth.net/introducing-bdd/).
 
+*História: Este artigo apareceu primeiro na revista
+[Better Software](http://j.mp/vHRQWp) em Março de 2006. Ele tem sido traduzido
+para o [Japonês](http://j.mp/vJOLGl) por [Yukei Wachi](http://j.mp/uIwtTO),
+[Coreano](http://j.mp/tIqbyZ) por [HongJoo Lee](http://j.mp/tr2Z5o),
+[Italiano](http://bit.ly/v2twov) por [Arialdo Martini](http://bit.ly/vkjZBB),
+[Francês](http://j.mp/wPipHF) por [Philippe Poumaroux](http://j.mp/zKyKgT),
+[Espanhol](http://j.mp/157tvAS) por [Oscar Zárate](https://twitter.com/OZcarZarate),
+[Turco](http://j.mp/1d2jpZa) por [Selim Öber](https://twitter.com/selimober),
+[Russo](http://habrahabr.ru/post/216923/) por alguém chamado
+[@w1ld](https://habrahabr.ru/users/w1ld/), [Persa](http://softengine.blog.ir/1395/04/21/introduction-to-bdd-dan-north) por
+[Abouzar Kamaee](https://ir.linkedin.com/in/abouzarkamaee) e
+[Alemão](https://www.yulup.com/de/lektuere/dan_north_einfuehrung_in_bdd.html) por
+[Ivan Kellenberger](https://www.linkedin.com/in/ivankellenberger)*.
+
 Eu tinha um problema. Enquanto estava usando e ensinando práticas ágeis, como o
 Test-Driven Development, ou Desenvolvimento Dirigido a Testes (TDD) em projetos em
 diferentes ambientes, eu sempre passava pela mesma confusão e desentendimentos.
