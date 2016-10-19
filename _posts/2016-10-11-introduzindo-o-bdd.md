@@ -11,7 +11,7 @@ Esta é uma tradução do artigo
 ["Introducing BDD" de Dan North](https://dannorth.net/introducing-bdd/).
 
 *História: Este artigo apareceu primeiro na revista
-[Better Software](http://j.mp/vHRQWp) em Março de 2006. Ele tem sido traduzido
+[Better Software](http://j.mp/vHRQWp) em Março de 2006. Ele foi traduzido
 para o [Japonês](http://j.mp/vJOLGl) por [Yukei Wachi](http://j.mp/uIwtTO),
 [Coreano](http://j.mp/tIqbyZ) por [HongJoo Lee](http://j.mp/tr2Z5o),
 [Italiano](http://bit.ly/v2twov) por [Arialdo Martini](http://bit.ly/vkjZBB),
@@ -33,8 +33,8 @@ testar de uma só vez, como chamar seus testes e como entender porque um teste f
 Quanto mais fundo eu entrava no TDD, mais eu sentia que a minha própria jornada
 tinha sido menos uma aprendizagem gradual do que uma série de becos sem saída.
 Lembro-me de pensar "Se alguém tivesse me dito isso!" muito mais vezes do que eu
-pensava "Uau, uma porta se abriu". Eu imaginei que devia ser possível apresentar
-o TDD de uma maneira que iria direto para as coisas boas e evitasse todas as
+pensava "Uau, uma porta se abriu". Eu imaginava ser possível apresentar
+o TDD de uma maneira que fosse direto para as coisas boas e evitasse todas as
 armadilhas.
 
 Minha resposta é o Behaviour-Driven Development, ou Desenvolvimento Dirigido a
@@ -78,8 +78,8 @@ e a notação camel-case é convertida para texto normal. Isso é tudo o que o p
 faz, mas seu efeito é incrível.
 
 Desenvolvedores descobriram que, dessa maneira, eles poderiam fazer ao menos
-alguma documentação, então, eles começaram a escrever métodos de teste cujos nomes
-eram sentenças reais. Além do mais, eles descobriram que quando eles escreviam os
+alguma documentação, então, começaram a escrever métodos de teste cujos nomes
+eram sentenças reais. Além do mais, descobriram que quando eles escreviam os
 nomes dos métodos na linguagem do domínio do negócio, os documentos gerados faziam
 sentido para os usuários, analistas e testadores.
 
@@ -98,7 +98,7 @@ escrevendo um `ValidadorDetalhesClienteTest` com métodos como
 `testDeveFalharParaApelidoFaltando` e `testDeveFalharParaTituloFaltando`
 
 Então eu comecei a calcular a idade e entrou num mundo de regras de negócios
-complicadas: E se a idade e data de nascimento são ambas fornecidas, mas não
+complicadas: E se a idade e data de nascimento forem ambas fornecidas, mas não
 coincidem? E se o aniversário é hoje? Como faço para calcular a idade, se eu só
 tenho uma data de nascimento? Eu estava escrevendo nomes de métodos de teste cada
 vez mais complicados para descrever este comportamento, então eu considerei largar
@@ -139,13 +139,13 @@ lugar. Solução: Mover o teste e talvez alterá-lo
 - O comportamento não estava mais correto - a premissa do sistema havia mudado.
 Solução: Excluir o teste.
 
-O último é provável que ocorra em projetos ágeis a medida que entendimento evolua.
+O último é provável que ocorra em projetos ágeis a medida que o entendimento evolua.
 Infelizmente, TDDers - praticantes de TDD - novatos tem um medo inato de excluir
 testes, como se de alguma maneira isso reduzisse a qualidade de seu código.
 
-Um aspecto mais sutil da palavra "should" ("deve" em português) se torna aparente
-quando comparada com as alternativas mais formais, como "will" ("irá", em português),
-ou "shall" ("deverá", em português). "Should", implicitamente, te permite desafiar a
+Um aspecto mais sutil da palavra "should" se torna aparente quando comparada com
+as alternativas mais formais, como "will" e "shall" - respectivamente "irá" e
+"deverá", em português. "Should", implicitamente, te permite desafiar a
 premissa do teste: "Deveria? Mesmo?". Isso torna mais fácil decidir se um teste
 está falhando devido a um bug que você introduziu ou simplesmente porque suas
 suposições anteriores sobre o comportamento do sistema agora estão incorretas.
@@ -224,25 +224,25 @@ public void deveFazerX() {
 }
 ```
 
-## Os requisitos são o comportamento, também
+## Requisitos são comportamento, também
 
 Neste ponto, eu tinha um framework que me ajudou a entender - e mais importante,
 a explicar - como o TDD funciona e uma abordagem que evitou todas as armadilhas
 que eu tinha encontrado.
 
-Para o fim de 2004, enquanto eu estava descrevendo meu novo vocabulário encontrado,
+Para o fim de 2004, enquanto eu estava descrevendo meu novo vocabulário encontrado
 baseado em comportamento para Matts, ele disse: "Mas isso é apenas como a análise".
 Houve uma longa pausa enquanto nós processávamos isto, e em seguida, decidimos
 aplicar todo este pensamento dirigido a comportamento na definição de requisitos.
 Se pudéssemos desenvolver um vocabulário consistente para analistas, testadores,
-desenvolvedores e o negócios, então nós estaríamos a caminho de eliminar algumas
-das ambiguidades e falhas de comunicação que ocorrem quando pessoas da área de
-tecnologia falam com pessoas da área de negócios.
+desenvolvedores e pessoas da área de negócios, então estaríamos a caminho de
+eliminar algumas das ambiguidades e falhas de comunicação que ocorrem quando
+pessoas da área de tecnologia falam com pessoas da área de negócios.
 
 ## BDD fornece uma "linguagem ubíqua" para análise
 
 Mais ou menos na mesma época, Eric Evans publicou seu livro best-seller "Domain Driven
-Project". Nele, ele descreve o conceito de modelação de um sistema utilizando uma
+Project". Nele, ele descreve o conceito de modelagem de um sistema utilizando uma
 linguagem ubíqua baseada no domínio de negócio, de modo que o vocabulário de negócios
 esteja no meio do código da aplicação.
 
@@ -270,15 +270,17 @@ aceitação - se o sistema cumpre todos os critérios de aceitação, ele está 
 comportando corretamente; caso contrário, ele não está se comportando corretamente.
 Por isso, criamos um modelo para capturar os critérios de aceitação de uma história.
 
-O modelo tinha que ser "frouxo" o suficiente de modo a não se sentir artificial
+O modelo tinha que ser "relaxado" o suficiente de modo a não se sentir artificial
 ou restringente para os analistas, mas estruturado o suficiente para que seja
 possível quebrar a história em seus fragmentos constituintes e automatizá-los.
 Começamos descrevendo os critérios de aceitação em termos de cenários, que teve
 a seguinte forma:
 
+```
 Dado algum contexto inicial ("givens", em inglês),
 Quando um evento ocorre,
 então, garanta alguns resultados.
+```
 
 Para ilustrar, vamos usar o exemplo clássico da máquina de caixa eletrônico.
 Um dos cartões de história se parece desse jeito:
@@ -305,12 +307,12 @@ primeiros cenários podem se parecer dessa maneira:
 +Cenário 1: A conta está com saldo positivo+
 
 Dada a conta que está com saldo positivo,
-E o cartão é válido,
-E o dispensador contém dinheiro,
+E o cartão seja válido,
+E o dispensador contenha dinheiro,
 Quando o cliente requisita dinheiro
-Então, garanta que a conta é debitada,
-E garanta que o dinheiro é dispensado,
-E assegure-se que o cartão é devolvido
+Então, garanta que a conta seja debitada,
+E garanta que o dinheiro seja dispensado,
+E assegure-se que o cartão seja devolvido,
 ```
 
 Observe o uso do "e" para conectar vários "givens" ou múltiplos resultados de uma
@@ -320,11 +322,11 @@ forma natural.
 +Cenário 2: A conta está com saldo negativo além do limite de cheque especial+
 
 Dada a conta com saldo negativo,
-E o cartão é válido
+E o cartão seja válido
 Quando o cliente solicita dinheiro
 Então, garanta que uma mensagem de rejeição seja exibida,
 E garanta que dinheiro não seja dispensado,
-E assegure-se de que o cartão seja devolvido
+E assegure-se de que o cartão seja devolvido.
 ```
 
 Ambos os cenários são baseados no mesmo evento e até mesmo tem alguns "givens"
@@ -367,15 +369,15 @@ public class ClienteSolicitaDinheiro implements Event {
 e assim por diante para os resultados. O JBehave, em seguida, conecta tudo isso
 e os executa. Ele cria um "mundo" ("world", em inglês), que é apenas um lugar
 para armazenar seus objetos, e passa para cada um dos "givens", para que eles
-possam preencher o "mundo" com estado conhecido. O JBehave, então, diz que o
+possam preencher o "mundo" com o estado conhecido. O JBehave, então, diz que o
 evento ocorre no mundo (ou "occur in", em inglês), onde de fato executa o
 comportamento real do cenário. Finalmente, ele passa o controle para quaisquer
 resultados que definimos para a história.
 
 Ter uma classe para representar cada fragmento nos permite reutilizá-los
 em outros cenários ou histórias. No início, os fragmentos são implementados usando
-simulações (ou "mocks" em inglês) para definir uma conta com saldo positivo e
-cartão válido. Estes formam o ponto de partida para implementar comportamento.
+mocks (ou "simulações" em português) para definir uma conta com saldo positivo e
+cartão válido. Estes formam o ponto de partida para implementar o comportamento.
 À medida que você implementa a aplicação, os "givens" e resultados são alterados
 para utilizarem as classes reais que você implementou, de modo que, quando o cenário
 está concluído, ele se torna um conjunto de testes funcionais de ponta-a-ponta,
