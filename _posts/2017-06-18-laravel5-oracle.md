@@ -3,7 +3,7 @@ layout: post
 title: "Laravel 5 + Oracle"
 description: "Working with Oracle in Laravel 5"
 category: development
-tags: [php, laravel, oracle, database, ]
+tags: [php, laravel, oracle, database]
 ---
 {% include JB/setup %}
 
