@@ -168,6 +168,7 @@ function update() {
 
 # The reduced way
 
+```
 function update() {
     $status = '';
     $result = DB::executeProcedure('update', [
@@ -178,6 +179,7 @@ function update() {
 
     return $status;
 }
+```
 
 Much better, huh?!
 
